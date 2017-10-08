@@ -16,17 +16,18 @@ export class HyperCore {
     // this.index()
   }
 
-  get all () {
+  // TODO: consider binding helper functions for searching for schemas
+  get schemas () {
     return map(this.api._schemas, schema => new HyperSchema(schema, this))
   }
 
-  get count () {
-    return Object.keys(this.all).length
-  }
-
-  // TODO: might want to map these by name so destructuring/lookup is trivial
+  // TODO: might want to map these by $id so destructuring/lookup is trivial
   get resources () {
     return this.all.map(schema => new HyperResource(schema))
+  }
+
+  get count () {
+    return Object.keys(this.schemas).length
   }
 
   /**
@@ -104,6 +105,7 @@ export class HyperCore {
     return this.hasRef(key) || this.hasId(key)
   }
 
+  // @see http://json-schema.org/latest/json-schema-core.html#rfc.section.8
   find (path = '#') {
     const chunks = path.split('/')
     const root   = path.startsWith('#') ? `#/${chunks[1]}` : path

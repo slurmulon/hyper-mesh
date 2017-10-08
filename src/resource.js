@@ -82,7 +82,7 @@ export class HyperResource {
    * @param {...*} [arguments] additional arguments to provide to request method
    * @returns {Promise} response
    */
-  schema () {
+  describedBy () {
     return this.get('describedBy', ...arguments)
   }
 
