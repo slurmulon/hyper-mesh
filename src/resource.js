@@ -1,7 +1,7 @@
 /**
- * Unifies a JSON Hyper-Schema document with Axios.
- *
  * Provides a pragmatic interface for interacting with a JSON Hyper-Schema based Restful HTTP API.
+ *
+ * Unifies a JSON Hyper-Schema document with Axios, a popular Node HTTP module
  */
 export class HyperResource {
 
