@@ -16,6 +16,19 @@ export class HyperCore {
     // this.index()
   }
 
+  get all () {
+    return map(this.api._schemas, schema => new HyperSchema(schema, this))
+  }
+
+  get count () {
+    return Object.keys(this.all).length
+  }
+
+  // TODO: might want to map these by name so destructuring/lookup is trivial
+  get resources () {
+    return this.all.map(schema => new HyperResource(schema))
+  }
+
   /**
    * Loads the root schema and populates this core storage entity
    * with all of the schemas and their references
@@ -93,18 +106,6 @@ export class HyperCore {
     }
 
     return null
-  }
-
-  get all () {
-    return map(this.api._schemas, schema => new HyperSchema(schema, this))
-  }
-
-  get count () {
-    return Object.keys(this.all).length
-  }
-
-  get resources () {
-    return this.all.map(schema => new HyperResource(schema))
   }
 
   byRef (ref) {
