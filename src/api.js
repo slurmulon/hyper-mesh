@@ -14,6 +14,9 @@ import { get, find, map, isEmpty } from 'lodash'
 // TODO: potentailly rename to HyperApi (renaming `this.core` to `this.core` as well)
 export class HyperApi {
 
+  /**
+   * @param {Object|string} root base/index JSON Hyper-Schema definition
+   */
   constructor (root) {
     this.root = root
     this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
@@ -22,25 +25,43 @@ export class HyperApi {
     // this.index()
   }
 
+  /**
+   * Provides every indexed JSON Hyper-Schema
+   *
+   * @returns {Array<HyperSchema>}
+   */
   // TODO: consider binding helper functions for searching for schemas
   get schemas () {
     return map(this.core._schemas, schema => new HyperSchema(schema, this))
   }
 
+  /**
+   * Provides HTTP resource versions of every indexed JSON Hyper-Schema
+   *
+   * @returns {Array<HyperResource>}
+   */
   // TODO: might want to map these by $id so destructuring/lookup is trivial
   get resources () {
     return this.all.map(schema => new HyperResource(schema))
   }
 
+  /**
+   * Determines the number of indexed JSON Hyper-Schemas (and thus resources)
+   *
+   * @returns {Number}
+   */
   get count () {
     return Object.keys(this.schemas).length
   }
 
   /**
-   * Loads the root schema and populates this core storage entity
-   * with all of the schemas and their references
+   * Loads the root JSON Schema and populates this core storage entity
+   * with all of the JSON Schemas and their references.
+   *
+   * @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
+   *
+   * @returns {Promise<this>}
    */
-  // @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
   async index () {
     // 0. call this.prepare (load meta schemas)
     // 1. follow root schema
@@ -54,12 +75,15 @@ export class HyperApi {
 
     const root = this.root
 
-    
-
     return this
   }
 
-  // Prepares the API for use by pre-emptively loading all of the JSON Meta-Schema dependencies
+  /**
+   * Prepares the API for use by preemptively loading all of the JSON Meta-Schema dependencies
+   *
+   * @param {Array<string>} [metas] additional JSON Meta-Schemas to prepare
+   * @returns {this}
+   */
   // TODO: could also dig into every schema and look for `$schema` URIs. automatically follow.
   prepare (metas = []) {
     const schemas = [
@@ -72,10 +96,18 @@ export class HyperApi {
     return this
   }
 
+  /**
+   * Adds/indexes a new JSON Schema and associates it with the provided key ($id)
+   *
+   * @param {Object} schema full JSON Schema
+   * @param {string} key value to use as identifier/lookup for the JSON Schema
+   * @param {boolean} [meta] whether or not the schema is a Meta-Schema
+   * @returns {this}
+   */
   // TODO: try to get this `key` into `HyperSchema`
   add (schema, key, meta = false) {
     const valid      = meta || this.core.validateSchema(schema, 'log')
-    const identifier = key  || schema || schema.id
+    const identifier = key  || schema || schema.id || schema.$id
 
     if (valid) {
       this.core.addMetaSchema(schema, identifier)
@@ -86,37 +118,85 @@ export class HyperApi {
     return this
   }
 
+  /**
+   * Removes a previously indexed JSON Schema matching the provided key ($id)
+   *
+   * @param {string} id
+   * @returns {this}
+   */
   remove (key) {
     this.core.removeSchema(key)
 
     return this
   }
 
+  /**
+   * Finds an indexed JSON Schema matching the provided $id or $ref
+   *
+   * @param {string} key
+   * @returns {Object}
+   */
   get (key) {
     return this.byRef(key) || this.byId(key)
   }
 
+  /**
+   * Finds an indexed JSON Schema matching the provided $ref
+   *
+   * @param {string} ref
+   * @returns {Object}
+   */
   byRef (ref) {
     return get(this.all[ref], 'schema')
   }
 
+  /**
+   * Finds an indexed JSON Schema matching the provided $id
+   *
+   * @param {string} id
+   * @returns {Object}
+   */
   byId (id) {
     return get(find(this.all), { id }, 'schema')
   }
 
+  /**
+   * Determines if a JSON Schema has been indexed against the provided $ref
+   *
+   * @param {string} ref
+   * @returns {boolean}
+   */
   hasRef (ref) {
     return !isEmpty(this.byRef(ref))
   }
 
+  /**
+   * Determines if a JSON Schema has been indexed against the provided $id
+   *
+   * @param {string} id
+   * @returns {boolean}
+   */
   hasId (id) {
     return !isEmpty(this.byId(id))
   }
 
+  /**
+   * Determines if a JSON Schema has been indexed against the provided $id or $ref
+   *
+   * @param {string} key
+   * @returns {boolean}
+   */
   has (key) {
     return this.hasRef(key) || this.hasId(key)
   }
 
   // @see http://json-schema.org/latest/json-schema-core.html#rfc.section.8
+  /**
+   * Finds a JSON Schema matching a JSON Pointer path
+   *
+   * @param {string} pointer JSON Pointer path
+   * @returns {Object} matching JSON Schema
+   */
   find (path = '#') {
     const chunks = path.split('/')
     const root   = path.startsWith('#') ? `#/${chunks[1]}` : path
@@ -132,6 +212,14 @@ export class HyperApi {
     return base
   }
 
+  /**
+   * Finds the JSON Schema matching a JSON Pointer path and provides a validator
+   *
+   * Defaults to the root schema validator should it exist (#/)
+   *
+   * @param {string} pointer JSON Pointer path
+   * @returns {Function|null} validator for matching JSON Schema
+   */
   matching (pointer) {
     const match = this.find(pointer)
 
