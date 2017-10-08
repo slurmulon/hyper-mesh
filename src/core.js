@@ -114,7 +114,7 @@ export class HyperCore {
     return this.hasRef(key) || this.hasId(key)
   }
 
-  denormalize (schema, id) {
+  denormalize (schema) {
     if (schema instanceof Object) {
       if (!schema.properties) {
         return schema
@@ -140,7 +140,7 @@ export class HyperCore {
     if (schema && schema.constructor === String) {
       const derefed = this.get(schema)
 
-      return this.denormalize(derefed, id)
+      return this.denormalize(derefed)
     }
   }
 
