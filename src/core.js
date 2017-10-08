@@ -20,6 +20,7 @@ export class HyperCore {
     // 2. for each schema call `this.add` using the URI provided by `$id`
     // 3. call `prepare` to load the dependent meta schemas
     // 4. report any `errors` or `missing` schemas during index population
+    // ??? - create HyperSchema from each of the `definitions`...?
 
     return this
   }
@@ -112,7 +113,35 @@ export class HyperCore {
   }
 
   denormalize (schema, id) {
+    if (schema instanceof Object) {
+      if (!schema.properties) {
+        return schema
+      }
 
+      Object.keys(schema.properties).forEach(propName => {
+        if (schema.properties.hasOwnProperty(propName)) {
+          const property = schema.properties[propName]
+
+          Object.keys(property).forEach(key => {
+            if (property.hasOwnProperty(key)) {
+              if (key === '$ref') {
+                const derefed = this.get(property[key])
+
+                schema.properties[propName] = derefed ? this.denormalize(derefed) : property
+              }
+            }
+          })
+        }
+      })
+
+      return schema
+    }
+
+    if (schema && schema.constructor === String) {
+      const derefed = this.get(schema)
+
+      return this.denormalize(derefed, id)
+    }
   }
 
 }
