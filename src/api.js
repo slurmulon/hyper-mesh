@@ -55,25 +55,33 @@ export class HyperApi {
   }
 
   /**
-   * Loads the root JSON Schema and populates this core storage entity
+   * Loads the root JSON Schema and populates this central storage entity
    * with all of the JSON Schemas and their references.
    *
    * @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
    *
+   * @param {Function} [resolvers] mapping functions to determine keys and schemas
    * @returns {Promise<this>}
    */
-  async index () {
-    // 0. call this.prepare (load meta schemas)
-    // 1. follow root schema
-    //  - determine if it's a URL (string), object, etc.
-    //  - use $id as the base URI
-    // 2. for each schema call `this.add` using the base URI provided by `$id`
-    // 3. call `prepare` to load the dependent meta schemas
-    // 4. report any `errors` or `missing` schemas during index population
-    // ??? - create HyperSchema from each of the `definitions`...?
+  // TODO
+  // - report any `errors` or `missing` schemas during index population
+  // - create HyperSchema from each of the `definitions`...?
+  async index (resolvers = { key: async () {}, schema: async () {} }) {
     this.prepare()
 
-    const root = this.root
+    const root = await this.resolve(this.root)
+    const defs = root.definitions
+
+    def.forEach(def => {
+      const schema = resolvers.schema instanceof Function ? await resolvers.schema(def) : null
+      const key    = resolvers.key    instanceof Function ? await resolvers.key(def) : null
+
+      if (!schema || !key) {
+        throw new Error('Failed to index API. Schema or key could not be resolved from definition', def)
+      }
+
+      this.add(schema, key)
+    })
 
     return this
   }
