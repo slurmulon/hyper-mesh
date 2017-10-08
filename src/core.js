@@ -123,12 +123,10 @@ export class HyperCore {
           const property = schema.properties[propName]
 
           Object.keys(property).forEach(key => {
-            if (property.hasOwnProperty(key)) {
-              if (key === '$ref') {
-                const derefed = this.get(property[key])
+            if (property.hasOwnProperty(key) && key === '$ref') {
+              const derefed = this.get(property[key])
 
-                schema.properties[propName] = derefed ? this.denormalize(derefed) : property
-              }
+              schema.properties[propName] = derefed ? this.denormalize(derefed) : property
             }
           })
         }
