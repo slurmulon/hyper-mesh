@@ -12,7 +12,7 @@ export class HyperCore {
     this.root = root
     this.api  = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
 
-    // TODO: determine if we should call this here
+    // TODO: determine if we should call this here. probably.
     // this.index()
   }
 
@@ -60,9 +60,10 @@ export class HyperCore {
     return this
   }
 
-  add (schema, key, isMeta) {
-    const valid = isMeta || this.api.validateSchema(schema, 'log')
-    const identifier = key || schema || schema.id
+  // TODO: try to get this `key` into `HyperSchema`
+  add (schema, key, meta = false) {
+    const valid      = meta || this.api.validateSchema(schema, 'log')
+    const identifier = key  || schema || schema.id
 
     if (valid) {
       this.api.addMetaSchema(schema, identifier)
@@ -81,6 +82,26 @@ export class HyperCore {
 
   get (key) {
     return this.byRef(key) || this.byId(key)
+  }
+
+  byRef (ref) {
+    return get(this.all[ref], 'schema')
+  }
+
+  byId (id) {
+    return get(find(this.all), { id }, 'schema')
+  }
+
+  hasRef (ref) {
+    return !isEmpty(this.byRef(ref))
+  }
+
+  hasId (id) {
+    return !isEmpty(this.byId(id))
+  }
+
+  has (key) {
+    return this.hasRef(key) || this.hasId(key)
   }
 
   find (path = '#') {
@@ -106,26 +127,6 @@ export class HyperCore {
     }
 
     return null
-  }
-
-  byRef (ref) {
-    return get(this.all[ref], 'schema')
-  }
-
-  byId (id) {
-    return get(find(this.all), { id }, 'schema')
-  }
-
-  hasRef (ref) {
-    return !isEmpty(this.byRef(ref))
-  }
-
-  hasId (id) {
-    return !isEmpty(this.byId(id))
-  }
-
-  has (key) {
-    return this.hasRef(key) || this.hasId(key)
   }
 
   denormalize (schema) {
@@ -156,6 +157,8 @@ export class HyperCore {
 
       return this.denormalize(derefed)
     }
+
+    throw new Error('Failed to denormalize malformed schema, must be an Object')
   }
 
 }

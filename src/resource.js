@@ -89,7 +89,7 @@ export class HyperResource {
   /**
    * Performs a GET request on the Restful API resource
    * and returns a JSON object that should be used as the
-   * root entity concerning user agent interactions
+   * root entity during user agent interactions
    *
    * "This relation indicates that the target of the link
    *  SHOULD be treated as the root or the body of the
@@ -160,6 +160,7 @@ export class HyperResource {
    *
    * @returns {Object} empty placeholder object (not a resource!)
    */
+  // TODO: move this to HyperSchema
   template () {
     return empty(this.schema)
   }

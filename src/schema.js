@@ -1,6 +1,7 @@
 import { HyperCore } from './core'
 import { HyperEntity } from './entity'
 import { HyperLink } from './link'
+import { HyperResource } from './resource'
 import { find } from 'lodash'
 
 export class HyperSchema {
@@ -12,6 +13,10 @@ export class HyperSchema {
 
   get key () {
     // TODO: normalized unique identifier of the schema (probably just `$id`)
+  }
+
+  get api () {
+    return new HyperResource(this.schema)
   }
 
   validate (entity, ...args) {
