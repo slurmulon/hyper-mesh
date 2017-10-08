@@ -21,11 +21,11 @@ export class HyperCore {
     return this
   }
 
-  prepare () {
+  prepare (metas = []) {
     const schemas = [
       require('json-schema/draft-04/hyper-schema'),
       require('json-schema/draft-04/links')
-    ]
+    ].concat(metas)
 
     schemas.forEach(schema => this.api.addMetaSchema(schema, schema.id, true))
 
