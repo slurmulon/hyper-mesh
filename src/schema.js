@@ -20,42 +20,6 @@ export class HyperSchema {
     // creates a new entity matched against a schema
   }
 
-  // get (key) {
-
-  // }
-
-  // find (path = '#') {
-
-  // }
-
-  // matching (pointer) {
-
-  // }
-
-  // add (schema, key, isMeta) {
-
-  // }
-
-  // remove (key) {
-
-  // }
-
-  // all () {
-
-  // }
-
-  // count () {
-
-  // }
-
-  // byRef (ref) {
-
-  // }
-
-  // byId (id) {
-
-  // }
-
   links () {
     return this.data.links.map(link => new HyperLink(link))
   }
