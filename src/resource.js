@@ -8,17 +8,8 @@ import empty from 'empty-schema'
  */
 export class HyperResource {
 
-  constructor (schema, http) {
+  constructor (schema) {
     this.schema = schema
-    this.http   = http
-  }
-
-  get api () {
-    return axios(this.http)
-  }
-
-  use (http) {
-    return new HyperResource({ ...this, ...http })
   }
 
   /**
@@ -27,47 +18,13 @@ export class HyperResource {
    * @param {string} rel the unique relation of the link
    * @returns {Promise<HyperLink>} Link Description Object matching rel
    */
-  async link (rel) {
+  link (rel) {
     return this.schema.linkBy({ rel })
-  }
-
-  /**
-   * Determines the URL of a Link Description Object by cross-referencing
-   * the instance object with the relevant JSON Hyper-Schema
-   *
-   * @param {string} rel the unique relation of the link
-   * @param {Object} [instance] object to use as the resource entity instance
-   * @returns {Promise<String>} URL of the Link Description Object
-   */
-  async url (rel, instance) {
-    const link = await this.link(rel)
-
-    return link.url(instance)
-  }
-
-  /**
-   * Generates a unique Restangular-based resource based on the
-   * determined URL of the Link Description Object
-   *
-   * @param {string} rel the unique relation of the link
-   * @param {Object} [instance] object to use as the resource entity instance
-   * @param {boolean} [collection] whether or not the resource represents a collection
-   * @returns {Promise<Restangular>} Restangular resource
-   */
-  // TODO: suse HyperLink.prototype.follow instead
-  async resource (rel, instance, collection = false) {
-    const url = await this.url(rel, instance)
-
-    // TODO: support all/one (i.e. `collection`)
-    return this.api.create({ baseUrl: url })
   }
 
   /**
    * Generates a unique Axios-based resource from an LDO (based on rel)
    * and then automatically performs an HTTP operation based on its "method".
-   *
-   * If no method is provided, the method defined on the source LDO
-   * will be implied (suggested usage as it's Hypermedia-friendly)
    *
    * @param {string} rel the unique relation of the link
    * @param {string} [method] HTTP method to perform (lower-case)
@@ -78,20 +35,11 @@ export class HyperResource {
    // TODO: add header based on encType if it exists
    // TODO: automatically validate data against entity.schema
    // TODO: accept headers
-  async action ({ rel, method, instance }, ...args) {
-    const link     = await this.link(rel)
-    const resource = await this.resource(rel, instance)
+  async action ({ rel, method, headers, instance }, ...args) {
+    const link   = this.link(rel)
+    const action = link.action({ method, headers, entity: instance })
 
-    const action = method || link.method.toLowerCase()
-    const call   = resource[action]
-
-    if (call instanceof Function) {
-      return call(...args)
-    } else {
-      // TODO: warn about unsupported action
-    }
-
-    return null
+    return action(...args)
   }
 
   /**
