@@ -46,8 +46,8 @@ export class HyperResource {
    * is treated as a full representation of the target resource
    * identified by the specified URI"
    *
-   * @param {string} [rel] the unique relation of the link
-   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {string} [rel] unique relation of the link
+   * @param {Object} [instance] resource entity instance
    * @param {...*} [args] additional arguments to provide to request method
    * @returns {Promise} response
    */
@@ -61,7 +61,7 @@ export class HyperResource {
    *
    * "The target of the link is the full representation for the instance object"
    *
-   * @param {...*} [arguments] additional arguments to provide to request method
+   * @param {...*} [arguments] additional arguments to provide to request
    * @returns {Promise} response
    */
   full () {
@@ -74,9 +74,10 @@ export class HyperResource {
    *
    * "The target of the link is a schema describing the instance object.
    *  This MAY be used to specifically denote the schemas of objects
-   *  within a JSON object hierarchy, facilitating polymorphic type data structures"
+   *  within a JSON object hierarchy, facilitating polymorphic
+   *  type data structures"
    *
-   * @param {...*} [arguments] additional arguments to provide to request method
+   * @param {...*} [arguments] additional arguments to provide to request
    * @returns {Promise} response
    */
   describedBy () {
