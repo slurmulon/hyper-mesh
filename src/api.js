@@ -238,6 +238,17 @@ export class HyperApi {
   }
 
   /**
+   * Creates a validation function based on the JSON Hyper-Schema (found with `id`)
+   *
+   * @param {string} id identifier of the JSON Huper-Schema (usually $id)
+   * @param {...*} [args] additional arguments to pass to Ajv
+   * @returns {Function}
+   */
+  validator (id, ...args) {
+    return this.core.getSchema(id, ...args)
+  }
+
+  /**
    * Returns a de-normalized (i.e. flattened) version of a JSON Schema
    * 
    * In other words, this traverses any sub-schemas (should they

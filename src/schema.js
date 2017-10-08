@@ -45,18 +45,7 @@ export class HyperSchema {
    * @returns {boolean}
    */
   validate (entity, ...args) {
-    return this.validator.call(this, entity)
-  }
-
-  /**
-   * Creates a validation function based on the JSON Hyper-Schema
-   *
-   * @param {...*} [args] additional arguments to pass to Ajv
-   * @returns {Function}
-   */
-  // TODO: push this logic into HyperApi
-  validator (...args) {
-    return this.api.core.getSchema(this.id, ...args)
+    return this.api.validator.call(this, entity)
   }
 
   /**
