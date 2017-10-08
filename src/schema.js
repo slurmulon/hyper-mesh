@@ -3,6 +3,7 @@ import { HyperEntity } from './entity'
 import { HyperLink } from './link'
 import { HyperResource } from './resource'
 import { find } from 'lodash'
+import empty from 'empty-schema'
 
 export class HyperSchema {
 
@@ -35,6 +36,15 @@ export class HyperSchema {
 
   linkBy (matcher) {
     return find(this.links(), matcher)
+  }
+
+  /**
+   * Generates an empty template Object based on the JSON Hyper-Schema.
+   *
+   * @returns {Object} empty placeholder/template object
+   */
+  template () {
+    return empty(this.schema)
   }
 
   static ify (instance) {

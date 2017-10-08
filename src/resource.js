@@ -1,6 +1,3 @@
-import axios from 'axios'
-import empty from 'empty-schema'
-
 /**
  * Unifies a JSON Hyper-Schema document with Axios.
  *
@@ -120,7 +117,7 @@ export class HyperResource {
   }
 
   /**
-   * Performs a POST request on a Restful API resource
+   * Performs a POST request on a Restful API resource entity
    *
    * @param {string} data data to use in request body
    * @param {Object} [instance] object to use as the resource entity instance
@@ -152,17 +149,6 @@ export class HyperResource {
    */
   delete (instance, ...args) {
     return this.action({ rel: 'delete', method: 'delete', instance }, ...args)
-  }
-
-  /**
-   * Generates an empty template Object that maps to the Restul API
-   * resource entity and its JSON Hyper-Schema
-   *
-   * @returns {Object} empty placeholder object (not a resource!)
-   */
-  // TODO: move this to HyperSchema
-  template () {
-    return empty(this.schema)
   }
 
 }
