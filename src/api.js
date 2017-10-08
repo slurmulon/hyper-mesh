@@ -11,7 +11,7 @@ import { get, find, map, isEmpty } from 'lodash'
  *
  * Also handles integration with Ajv, the core JSON Schema validation module.
  */
-// TODO: potentailly rename to HyperApi (renaming `this.core` to `this.core` as well)
+// TODO: potentailly rename to HyperIndex (renaming `this.core` to `this.index` as well)
 export class HyperApi {
 
   /**
@@ -42,7 +42,7 @@ export class HyperApi {
    */
   // TODO: might want to map these by $id so destructuring/lookup is trivial
   get resources () {
-    return this.all.map(schema => new HyperResource(schema))
+    return this.schemas.map(schema => new HyperResource(schema))
   }
 
   /**
@@ -147,7 +147,7 @@ export class HyperApi {
    * @returns {Object}
    */
   byRef (ref) {
-    return get(this.all[ref], 'schema')
+    return get(this.schemas[ref], 'schema')
   }
 
   /**
@@ -157,7 +157,7 @@ export class HyperApi {
    * @returns {Object}
    */
   byId (id) {
-    return get(find(this.all), { id }, 'schema')
+    return get(find(this.schemas), { id }, 'schema')
   }
 
   /**

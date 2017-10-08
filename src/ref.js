@@ -1,10 +1,10 @@
-// TODO: incorporate json-where
-
+// TODO: incorporate json-pointer
+// TODO: actually use this
 export class HyperRef {
 
-  constructor (path, core) {
+  constructor (path, api) {
     this.path = path
-    this.core = core
+    this.api  = api
   }
 
   validate () {

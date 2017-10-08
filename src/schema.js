@@ -11,7 +11,7 @@ export class HyperSchema {
     this.api = api
   }
 
-  get key () {
+  get id () {
     // TODO: normalized unique identifier of the schema (probably just `$id`)
   }
 
