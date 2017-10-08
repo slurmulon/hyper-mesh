@@ -165,4 +165,23 @@ export class HyperResource {
     return empty(this.schema)
   }
 
+  /**
+   * TODO
+   *
+   * Resolves a JSON Hyper-Schema by a URI
+   *
+   * If a local Object, it simply returns the result
+   * If a remote URL, it follows the URL and then returns the body
+   *
+   * @param {string} data unique identifier or full representation of a JSON Hyper-Schema
+   * @return {Promise<Object>} resolved content of JSON Hyper-Schema
+   */
+  static resolve (data) {
+    if (data instanceof String) {
+      return axios.get(data)
+    }
+
+    return Promise.resolve(data)
+  }
+
 }
