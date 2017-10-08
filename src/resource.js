@@ -113,7 +113,7 @@ export class HyperResource {
    * @returns {Promise} response
    */
   all (rel = 'instances', instance, ...args) {
-    return this.action({ rel, method: 'getList', instance }, ...args)
+    return this.action({ rel, method: 'get', instance }, ...args)
   }
 
   /**
@@ -137,7 +137,7 @@ export class HyperResource {
    * @returns {Promise} response
    */
   update (data, instance, ...args) {
-    return this.action({ rel: 'update', method: 'customPUT', instance }, data, ...args)
+    return this.action({ rel: 'update', method: 'put', instance }, data, ...args)
   }
 
   /**
