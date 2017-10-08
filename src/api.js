@@ -66,15 +66,14 @@ export class HyperApi {
   // TODO
   // - report any `errors` or `missing` schemas during index population
   // - create HyperSchema from each of the `definitions`...?
-  async index (resolvers = { key: async () {}, schema: async () {} }) {
+  async index (resolvers = { key: _ => _.$ref, schema: _ => _ }) {
     this.prepare()
 
     const root = await this.resolve(this.root)
-    const defs = root.definitions
 
-    def.forEach(def => {
+    root.definitions.forEach(async def => {
       const schema = resolvers.schema instanceof Function ? await resolvers.schema(def) : null
-      const key    = resolvers.key    instanceof Function ? await resolvers.key(def) : null
+      const key    = resolvers.key    instanceof Function ? await resolvers.key(def)    : null
 
       if (!schema || !key) {
         throw new Error('Failed to index API. Schema or key could not be resolved from definition', def)

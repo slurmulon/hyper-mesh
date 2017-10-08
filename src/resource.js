@@ -5,6 +5,9 @@
  */
 export class HyperResource {
 
+  /**
+   * @param {HyperSchema} schema
+   */
   constructor (schema) {
     this.schema = schema
   }
@@ -69,8 +72,8 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource
-   * and returns a schema describing instance JSON object
+   * Performs a GET request on the Restful API resource and returns
+   * a schema describing instance JSON object.
    *
    * "The target of the link is a schema describing the instance object.
    *  This MAY be used to specifically denote the schemas of objects
@@ -85,9 +88,9 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource
-   * and returns a JSON object that should be used as the
-   * root entity during user agent interactions
+   * Performs a GET request on the Restful API resource and returns
+   * a JSON object that should be used as the root entity during
+   * user agent interactions.
    *
    * "This relation indicates that the target of the link
    *  SHOULD be treated as the root or the body of the

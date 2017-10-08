@@ -51,7 +51,7 @@ export class HyperLink {
   }
 
   /**
-   * Genreates a unique Axios-based resource from an LDO (based on rel).
+   * Generates a unique Axios-based resource from an LDO (based on rel).
    *
    * If no method is provided, the method defined on the source LDO will
    * be implied at run-time (this is the suggested usage, Hypermedia-friendly).

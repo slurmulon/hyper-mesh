@@ -1,5 +1,5 @@
 // TODO: incorporate json-pointer
-// TODO: actually use this
+// TODO: actually use this (or axe it)
 export class HyperRef {
 
   constructor (path, api) {
