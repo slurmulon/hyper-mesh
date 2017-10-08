@@ -34,7 +34,6 @@ export class HyperResource {
    */
    // TODO: add header based on encType if it exists
    // TODO: automatically validate data against entity.schema
-   // TODO: accept headers
   async action ({ rel, method, headers, instance }, ...args) {
     const link   = this.link(rel)
     const action = link.action({ method, headers, entity: instance })
@@ -156,17 +155,17 @@ export class HyperResource {
   }
 
   /**
-   * Generates an empty form that maps to the Restul API
+   * Generates an empty template Object that maps to the Restul API
    * resource entity and its JSON Hyper-Schema
    *
-   * @returns {Object} empty form object (not a resource!)
+   * @returns {Object} empty placeholder object (not a resource!)
    */
-  form () {
+  template () {
     return empty(this.schema)
   }
 
   /**
-   * TODO
+   * TODO: probably move this to HyperCore
    *
    * Resolves a JSON Hyper-Schema by a URI
    *

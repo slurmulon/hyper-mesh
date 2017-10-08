@@ -1,10 +1,10 @@
 import Ajv from 'ajv'
 import pointer from 'json-pointer'
-import { get, find, isEmpty } from 'lodash'
+import { get, find, map, isEmpty } from 'lodash'
 
+// TODO: potentailly rename to HyperApi (renaming `this.api` to `this.core` as well)
 export class HyperCore {
 
-  // root = root JSON Hyper-Schema
   constructor (root) {
     this.root = root
     this.api  = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
@@ -27,6 +27,7 @@ export class HyperCore {
     return this
   }
 
+  // TODO: could also dig into every schema and look for `$schema` URIs. automatically follow.
   prepare (metas = []) {
     const schemas = [
       require('json-schema/draft-04/hyper-schema'),
@@ -87,7 +88,7 @@ export class HyperCore {
   }
 
   get all () {
-    return this.api._schemas
+    return map(this.api._schemas, schema => new HyperSchema(schema, this))
   }
 
   get count () {

@@ -11,13 +11,14 @@ export class HyperSchema {
   }
 
   get key () {
-    // TODO: normalized unique identifier of the schema
+    // TODO: normalized unique identifier of the schema (probably just `$id`)
   }
 
   validate (entity, ...args) {
     return this.core.api.getSchema(this.key, ...args)
   }
 
+  // TODO: consider `entity` vs `collection`
   create (entity) {
     return new HyperEntity(entity, this.schema)
   }

@@ -8,9 +8,7 @@ export class HyperEntity {
   }
 
   use (schema) {
-    this.schema = schema
-
-    return this
+    return Object.assign(this, { schema })
   }
 
   validate () {
