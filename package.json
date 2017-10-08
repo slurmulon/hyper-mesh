@@ -18,7 +18,7 @@
     "rest"
   ],
   "author": "MadHax, LLC",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/slurmulon/hyper-mesh/issues"
   },
@@ -26,11 +26,13 @@
   "dependencies": {
     "ajv": "^5.2.3",
     "axios": "^0.16.2",
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2017": "^6.24.1",
     "empty-schema": "^0.1.5",
     "json-pointer": "^0.6.0",
     "json-schema": "^0.2.3",
     "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2017": "^6.24.1"
   }
 }
