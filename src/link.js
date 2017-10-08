@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+/**
+ * Represents an individual Link Description Object (LDO) belonging
+ * to a JSON Hyper-Schema entity.
+ */
 export class HyperLink {
 
   consructor ({ rel, entity, method, href, encType, targetSchema }) {
@@ -63,7 +67,9 @@ export class HyperLink {
     const resource = this.resource(...arguments)
     const action   = method || this.method.toLowerCase()
 
-    // TODO: validate that the `action` is valid
+    if (!resource.hasOwnProperty(action) || !(action instanceof Function)) {
+      throw new Error(`Unsupported HTTP action: ${action}`)
+    }
 
     return resource[action]
   }

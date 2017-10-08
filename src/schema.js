@@ -1,4 +1,4 @@
-import { HyperCore } from './core'
+import { HyperApi } from './api'
 import { HyperEntity } from './entity'
 import { HyperLink } from './link'
 import { HyperResource } from './resource'
@@ -6,9 +6,9 @@ import { find } from 'lodash'
 
 export class HyperSchema {
 
-  constructor (schema, core) {
+  constructor (schema, api) {
     this.schema = schema
-    this.core   = core
+    this.api = api
   }
 
   get key () {
@@ -19,8 +19,9 @@ export class HyperSchema {
     return new HyperResource(this.schema)
   }
 
+  // TODO: push this logic into HyperApi
   validate (entity, ...args) {
-    return this.core.api.getSchema(this.key, ...args)
+    return this.api.core.getSchema(this.key, ...args)
   }
 
   // TODO: consider `entity` vs `collection`

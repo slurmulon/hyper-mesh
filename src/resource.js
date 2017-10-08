@@ -166,12 +166,15 @@ export class HyperResource {
   }
 
   /**
-   * TODO: probably move this to HyperCore
+   * TODO: probably move this to HyperApi. Or just axe it.
    *
    * Resolves a JSON Hyper-Schema by a URI
    *
    * If a local Object, it simply returns the result
    * If a remote URL, it follows the URL and then returns the body
+   *  - WARN: shouldn't resolve $id by URI per http://json-schema.org/latest/json-schema-core.html#rfc.section.8
+   *
+   *  "The URI is not a network locator, only an identifier. A schema need not be downloadable from the address if it is a network-addressable URL, and implementations SHOULD NOT assume they should perform a network operation when they encounter a network-addressable URI."
    *
    * @param {string} data unique identifier or full representation of a JSON Hyper-Schema
    * @return {Promise<Object>} resolved content of JSON Hyper-Schema
@@ -180,6 +183,8 @@ export class HyperResource {
     if (data instanceof String) {
       return axios.get(data)
     }
+
+    // TODO: return this.schema.api.get(data)
 
     return Promise.resolve(data)
   }
