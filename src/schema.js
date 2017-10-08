@@ -38,14 +38,14 @@ export class HyperSchema {
   }
 
   /**
-   * Validates an arbitrary entity against the JSON Hyper-Schema
+   * Validates an arbitrary entity instance against the JSON Hyper-Schema
    *
    * @param {*} entity
    * @param {...*} [args] additional arguments to pass to Ajv
    * @returns {boolean}
    */
   validate (entity, ...args) {
-    return this.api.validator.call(this, entity)
+    return this.api.validator(this.id, ...args)(entity)
   }
 
   /**
