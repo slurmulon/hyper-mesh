@@ -1,3 +1,6 @@
+import { HyperSchema } from './schema'
+import { HyperResource } from './resource'
+
 import Ajv from 'ajv'
 import pointer from 'json-pointer'
 import { get, find, map, isEmpty } from 'lodash'
@@ -8,6 +11,9 @@ export class HyperCore {
   constructor (root) {
     this.root = root
     this.api  = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
+
+    // TODO: determine if we should call this here
+    // this.index()
   }
 
   /**
@@ -16,6 +22,7 @@ export class HyperCore {
    */
   // @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
   index () {
+    // 0. call this.prepare (load meta schemas)
     // 1. follow root schema
     //  - determine if it's a URL (string), object, etc.
     //  - use $id as the base URI
@@ -27,6 +34,7 @@ export class HyperCore {
     return this
   }
 
+  // Prepares the API for use by pre-emptively loading all of the JSON Meta-Schema dependencies
   // TODO: could also dig into every schema and look for `$schema` URIs. automatically follow.
   prepare (metas = []) {
     const schemas = [
@@ -93,6 +101,10 @@ export class HyperCore {
 
   get count () {
     return Object.keys(this.all).length
+  }
+
+  get resources () {
+    return this.all.map(schema => new HyperResource(schema))
   }
 
   byRef (ref) {
