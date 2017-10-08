@@ -1,5 +1,7 @@
 import { HyperCore } from './core'
+import { HyperEntity } from './entity'
 import { HyperLink } from './link'
+import { find } from 'lodash'
 
 export class HyperSchema {
 
@@ -17,15 +19,15 @@ export class HyperSchema {
   }
 
   create (entity) {
-    // creates a new entity matched against a schema
+    return new HyperEntity(entity, this.schema)
   }
 
   links () {
-    return this.data.links.map(link => new HyperLink(link))
+    return this.schema.links.map(link => new HyperLink(link))
   }
 
   linkBy (matcher) {
-    // return find(this.links(), matcher)
+    return find(this.links(), matcher)
   }
 
   // hasRef (ref) {

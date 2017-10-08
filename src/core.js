@@ -14,10 +14,12 @@ export class HyperCore {
    * Loads the root schema and populates this core storage entity
    * with all of the schemas and their references
    */
+  // @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
   index () {
     // 1. follow root schema
     //  - determine if it's a URL (string), object, etc.
-    // 2. for each schema call `this.add` using the URI provided by `$id`
+    //  - use $id as the base URI
+    // 2. for each schema call `this.add` using the base URI provided by `$id`
     // 3. call `prepare` to load the dependent meta schemas
     // 4. report any `errors` or `missing` schemas during index population
     // ??? - create HyperSchema from each of the `definitions`...?
