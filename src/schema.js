@@ -30,18 +30,6 @@ export class HyperSchema {
     return find(this.links(), matcher)
   }
 
-  // hasRef (ref) {
-
-  // }
-
-  // hasId (id) {
-
-  // }
-
-  // has (key) {
-  //   return this.hasRef(key) || this.hasId(key)
-  // }
-
   static ify (instance) {
     // TODO: apply schema and parse entity/links of provided instance
   }
