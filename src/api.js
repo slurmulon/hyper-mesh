@@ -5,12 +5,18 @@ import Ajv from 'ajv'
 import pointer from 'json-pointer'
 import { get, find, map, isEmpty } from 'lodash'
 
-// TODO: potentailly rename to HyperApi (renaming `this.api` to `this.core` as well)
-export class HyperCore {
+/**
+ * Centerpiece of the hyper-mesh architecture. Establishes a root/index schema
+ * and is used as the base-point for all internal references.
+ *
+ * Also handles integration with Ajv, the core JSON Schema validation module.
+ */
+// TODO: potentailly rename to HyperApi (renaming `this.core` to `this.core` as well)
+export class HyperApi {
 
   constructor (root) {
     this.root = root
-    this.api  = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
+    this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
 
     // TODO: determine if we should call this here. probably.
     // this.index()
@@ -18,7 +24,7 @@ export class HyperCore {
 
   // TODO: consider binding helper functions for searching for schemas
   get schemas () {
-    return map(this.api._schemas, schema => new HyperSchema(schema, this))
+    return map(this.core._schemas, schema => new HyperSchema(schema, this))
   }
 
   // TODO: might want to map these by $id so destructuring/lookup is trivial
@@ -35,7 +41,7 @@ export class HyperCore {
    * with all of the schemas and their references
    */
   // @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
-  index () {
+  async index () {
     // 0. call this.prepare (load meta schemas)
     // 1. follow root schema
     //  - determine if it's a URL (string), object, etc.
@@ -44,6 +50,11 @@ export class HyperCore {
     // 3. call `prepare` to load the dependent meta schemas
     // 4. report any `errors` or `missing` schemas during index population
     // ??? - create HyperSchema from each of the `definitions`...?
+    this.prepare()
+
+    const root = this.root
+
+    
 
     return this
   }
@@ -56,18 +67,18 @@ export class HyperCore {
       require('json-schema/draft-04/links')
     ].concat(metas)
 
-    schemas.forEach(schema => this.api.addMetaSchema(schema, schema.id, true))
+    schemas.forEach(schema => this.core.addMetaSchema(schema, schema.id, true))
 
     return this
   }
 
   // TODO: try to get this `key` into `HyperSchema`
   add (schema, key, meta = false) {
-    const valid      = meta || this.api.validateSchema(schema, 'log')
+    const valid      = meta || this.core.validateSchema(schema, 'log')
     const identifier = key  || schema || schema.id
 
     if (valid) {
-      this.api.addMetaSchema(schema, identifier)
+      this.core.addMetaSchema(schema, identifier)
     } else {
       // TODO; warn about being an invalid identifier
     }
@@ -76,7 +87,7 @@ export class HyperCore {
   }
 
   remove (key) {
-    this.api.removeSchema(key)
+    this.core.removeSchema(key)
 
     return this
   }
@@ -125,12 +136,22 @@ export class HyperCore {
     const match = this.find(pointer)
 
     if (!match) {
-      return this.api.compile(match)
+      return this.core.compile(match)
     }
 
     return null
   }
 
+  /**
+   * Returns a de-normalized (i.e. flattened) version of a JSON Schema
+   * 
+   * In other words, this traverses any sub-schemas (should they
+   * exist) and then replaces the associated "$ref" properties 
+   * with their full dereferenced schema
+   *
+   * @param {Object} schema JSON Schema object to denormalize
+   * @returns {Object} denormalized instance JSON Schema
+   */
   denormalize (schema) {
     if (schema instanceof Object) {
       if (!schema.properties) {
@@ -161,6 +182,39 @@ export class HyperCore {
     }
 
     throw new Error('Failed to denormalize malformed schema, must be an Object')
+  }
+
+  /**
+   * Resolves a JSON Hyper-Schema by a URI
+   *
+   * If a local Object, it simply returns the result
+   * If a remote URL, it follows the URL and then returns the body
+   * 
+   *  - WARN: shouldn't resolve $id by URI per http://json-schema.org/latest/json-schema-core.html#rfc.section.8
+   *
+   *    "The URI is not a network locator, only an identifier.
+   *     A schema need not be downloadable from the address if it is a network-addressable URL,
+   *     and implementations SHOULD NOT assume they should perform a network operation when they encounter a network-addressable URI."
+   *
+   * @param {string|Object} data unique identifier or full representation of a JSON Hyper-Schema
+   * @return {Promise<Object>} resolved content of JSON Hyper-Schema
+   */
+  async resolve (data) {
+    if (typeof data === 'string') {
+       const local = this.get(data)
+
+      if (!local) {
+        return await axios.get(data)
+      }
+
+      return local
+    }
+
+    if (typeof data === 'object') {
+      return data
+    }
+
+    return null
   }
 
 }
