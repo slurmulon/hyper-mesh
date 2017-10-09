@@ -13,7 +13,7 @@ export class HyperResource {
   }
 
   /**
-   * Provides the Link Description Object matching a rel
+   * Provides the Link Description Object matching a relation type (rel).
    *
    * @param {string} rel the unique relation of the link
    * @returns {Promise<HyperLink>} Link Description Object matching rel
@@ -28,7 +28,8 @@ export class HyperResource {
    *
    * @param {string} rel the unique relation of the link
    * @param {string} [method] HTTP method to perform (lower-case)
-   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {Object} [headers] HTTP headers to send in request
+   * @param {Object} [instance] object to use as the resource entity instance in request
    * @param {...*} [args] additional arguments to provide to resource HTTP action
    * @param {Promise} resource action response
    */
@@ -42,8 +43,8 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource
-   * and returns a single JSON object
+   * Performs an HTTP GET request on the Restful API resource
+   * and returns a single JSON object.
    *
    * "The object represents a resource and the instance object
    * is treated as a full representation of the target resource
@@ -59,8 +60,8 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource
-   * and returns a full representation JSON object
+   * Performs a HTTP GET request on the Restful API resource and returns
+   * a full representation JSON object.
    *
    * "The target of the link is the full representation for the instance object"
    *
@@ -72,8 +73,8 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource and returns
-   * a schema describing instance JSON object.
+   * Performs an HTTP GET request on the Restful API resource and returns
+   * a schema describing the instance JSON object.
    *
    * "The target of the link is a schema describing the instance object.
    *  This MAY be used to specifically denote the schemas of objects
@@ -88,7 +89,7 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource and returns
+   * Performs an HTTP GET request on the Restful API resource and returns
    * a JSON object that should be used as the root entity during
    * user agent interactions.
    *
@@ -108,8 +109,8 @@ export class HyperResource {
   }
 
   /**
-   * Performs a GET request on the Restful API resource entity
-   * and returns a collection of JSON objects
+   * Performs an HTTP GET request on the Restful API resource entity
+   * and returns a collection of JSON objects.
    *
    * @param {string} [rel] the unique relation of the link
    * @param {Object} [instance] object to use as the resource entity instance
@@ -121,7 +122,7 @@ export class HyperResource {
   }
 
   /**
-   * Performs a POST request on a Restful API resource entity
+   * Performs an HTTP POST request on a Restful API resource entity.
    *
    * @param {string} data data to use in request body
    * @param {Object} [instance] object to use as the resource entity instance
@@ -133,7 +134,7 @@ export class HyperResource {
   }
 
   /**
-   * Performs a PUT request on a Restful API resource entity
+   * Performs an HTTP PUT request on a Restful API resource entity.
    *
    * @param {*} data data to use in request body
    * @param {Object} [instance] object to use as the resource entity instance
@@ -145,7 +146,7 @@ export class HyperResource {
   }
 
   /**
-   * Performs a DELETE request on a Restful API resource entity
+   * Performs an HTTP DELETE request on a Restful API resource entity.
    *
    * @param {Object} [instance] object to use as the resource entity instance
    * @param {...*} [args] additional arguments to provide to request method
