@@ -112,6 +112,7 @@ export class HyperApi {
    * @returns {this}
    */
   // TODO: try to get this `key` into `HyperSchema`
+  // TODO: probably want to track the parsed HyperSchemas as well
   add (schema, key, meta = false) {
     const valid      = meta || this.core.validateSchema(schema, 'log')
     const identifier = key  || schema || schema.id || schema.$id
@@ -188,7 +189,7 @@ export class HyperApi {
   }
 
   /**
-   * Determines if a JSON Schema has been indexed against the provided $id or $ref
+   * Determines if a JSON Schema has been indexed using the provided $id or $ref
    *
    * @param {string} key
    * @returns {boolean}
@@ -249,11 +250,10 @@ export class HyperApi {
   }
 
   /**
-   * Returns a de-normalized (i.e. flattened) version of a JSON Schema
+   * Returns a denormalized version of a JSON Schema
    * 
-   * In other words, this traverses any sub-schemas (should they
-   * exist) and then replaces the associated "$ref" properties 
-   * with their full dereferenced schema
+   * Traverses any sub-schemas and then replaces the "$ref"
+   * properties with their full dereferenced schema
    *
    * @param {Object} schema JSON Schema object to denormalize
    * @returns {Object} denormalized instance JSON Schema
