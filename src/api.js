@@ -20,9 +20,6 @@ export class HyperApi {
   constructor (root) {
     this.root = root
     this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
-
-    // TODO: determine if we should call this here. probably.
-    // this.index()
   }
 
   /**
@@ -55,25 +52,46 @@ export class HyperApi {
   }
 
   /**
+   * Finds a previously indexed JSON Hyper-Schema that matches the resolver function
+   *
+   * @param {Function} resolver
+   * @returns {Array<HyperSchema>}
+   */
+  schema (resolver) {
+    return this.schemas.find(resolver)
+  }
+
+  /**
+   * Finds an HTTP resource associated with a previously indexed JSON Hyper-Schema
+   * that matches the resolver function
+   *
+   * @param {Function} resolver
+   * @returns {Array<HyperResource>}
+   */
+  resource (resolver) {
+    return this.resources.find(resolver)
+  }
+
+  /**
    * Loads the root JSON Schema and populates this central storage entity
    * with all of the JSON Schemas and their references.
    *
    * @see: http://json-schema.org/latest/json-schema-core.html#id-keyword
    *
-   * @param {Function} [resolvers] mapping functions to determine keys and schemas
+   * @param {Function} [resolvers] mapping functions to determine keys and schemas {key: String, schema: Object}
    * @returns {Promise<this>}
    */
   // TODO
   // - report any `errors` or `missing` schemas during index population
   // - create HyperSchema from each of the `definitions`...?
-  async index (resolvers = { key: _ => _.$ref, schema: _ => _ }) {
+  async index (resolvers = { }) {
     this.prepare()
 
     const root = await this.resolve(this.root)
 
     root.definitions.forEach(async def => {
-      const schema = resolvers.schema instanceof Function ? await resolvers.schema(def) : null
-      const key    = resolvers.key    instanceof Function ? await resolvers.key(def)    : null
+      const schema = resolvers.schema instanceof Function ? await resolvers.schema(def) : def
+      const key    = resolvers.key    instanceof Function ? await resolvers.key(def)    : def.$ref
 
       if (!schema || !key) {
         throw new Error('Failed to index API. Schema or key could not be resolved from definition', def)
@@ -212,7 +230,7 @@ export class HyperApi {
 
     if (base && chunks.length > 1) {
       const subChunks  = chunks.splice(2, chunks.length)
-      const subPointer = subChunks.length ? subChunks.map(chunk => `/${chunk}`).reduce((a,b) => a + b) : ''
+      const subPointer = subChunks.length ? subChunks.map(chunk => `/${chunk}`).reduce((sum, next) => sum + next) : ''
 
       return pointer.get(base, subPointer)
     }
