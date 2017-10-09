@@ -4,7 +4,7 @@
 
 ## Features
 
-- Parses and validates [JSON Hyper-Schema](https://tools.ietf.org/html/draft-wright-json-schema-hyperschema-00) definitions
+- Parses and validates [JSON Hyper-Schema](https://tools.ietf.org/html/draft-wright-json-schema-hyperschema-00) definitions using [`Ajv`](https://www.npmjs.com/package/ajv)
 - Provides Hypermedia-driven RESTful HTTP API resources powered by [`axios`](https://www.npmjs.com/package/axios)
 - Automatically validates entity HTTP request bodies against their associated JSON Schemas
 - Manages a centralized index of your JSON Hyper-Schemas for easy referencing
