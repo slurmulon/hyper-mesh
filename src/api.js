@@ -305,7 +305,7 @@ export class HyperApi {
       return this.denormalize(derefed)
     }
 
-    throw new Error('Failed to denormalize malformed schema, must be an Object')
+    throw new Error('Failed to denormalize malformed JSON Schema, must be an Object')
   }
 
   /**
