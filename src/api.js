@@ -17,6 +17,7 @@ export class HyperApi {
   /**
    * @param {Object|string} root base/index JSON Hyper-Schema definition
    */
+  // TODO: accept baseURL paramter. could also imply from root.json URL.
   constructor (root) {
     this.root = root
     this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
