@@ -29,7 +29,7 @@ export class HyperLink {
 
     matches.forEach(match => {
       const key = match.replace(/[\])}[{(]/g, '')
-      const sub = key instanceof Object && key ? entity[key] : null
+      const sub = key ? entity[key] : null
 
       url = url.replace(match, sub)
     })
