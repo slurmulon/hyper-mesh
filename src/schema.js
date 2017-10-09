@@ -25,7 +25,7 @@ export class HyperSchema {
    * @returns {string}
    */
   get id () {
-    // TODO: normalized unique identifier of the schema (probably just `$id`)
+    return this.schema.$id || this.schema.id || this.schema.$ref
   }
 
   /**
