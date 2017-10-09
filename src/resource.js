@@ -55,9 +55,56 @@ export class HyperResource {
    * @param {...*} [args] additional arguments to provide to request method
    * @returns {Promise} response
    */
-  // TODO: consider supporting `all` as well to be consistent with the `one` vs. `all` paradigm
   get (rel = 'self', instance, ...args) {
     return this.action({ rel, method: 'get', instance }, ...args)
+  }
+
+  /**
+   * Performs an HTTP GET request on the Restful API resource entity
+   * and returns a collection of JSON objects.
+   *
+   * @param {string} [rel] the unique relation of the link
+   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {...*} [args] additional arguments to provide to request method
+   * @returns {Promise} response
+   */
+  all (rel = 'instances', instance, ...args) {
+    return this.action({ rel, method: 'get', instance }, ...args)
+  }
+
+  /**
+   * Performs an HTTP POST request on a Restful API resource entity.
+   *
+   * @param {string} data data to use in request body
+   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {...*} [args] additional arguments to provide to request method
+   * @returns {Promise} response
+   */
+  create (data, instance, ...args) {
+    return this.action({ rel: 'create', method: 'post', instance }, undefined, data, ...args)
+  }
+
+  /**
+   * Performs an HTTP PUT request on a Restful API resource entity.
+   *
+   * @param {*} data data to use in request body
+   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {...*} [args] additional arguments to provide to request method
+   * @returns {Promise} response
+   */
+  update (data, instance, ...args) {
+    return this.action({ rel: 'update', method: 'put', instance }, data, ...args)
+  }
+
+  /**
+   * Performs an HTTP DELETE request on a Restful API resource entity.
+   *
+   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {...*} [args] additional arguments to provide to request method
+   * @returns {Promise} response
+   */
+  delete (instance, ...args) {
+    return this.action({ rel: 'delete', method: 'delete', instance }, ...args)
   }
 
   /**
@@ -107,54 +154,6 @@ export class HyperResource {
    */
   root () {
     return this.get('root', ...arguments)
-  }
-
-  /**
-   * Performs an HTTP GET request on the Restful API resource entity
-   * and returns a collection of JSON objects.
-   *
-   * @param {string} [rel] the unique relation of the link
-   * @param {Object} [instance] object to use as the resource entity instance
-   * @param {...*} [args] additional arguments to provide to request method
-   * @returns {Promise} response
-   */
-  all (rel = 'instances', instance, ...args) {
-    return this.action({ rel, method: 'get', instance }, ...args)
-  }
-
-  /**
-   * Performs an HTTP POST request on a Restful API resource entity.
-   *
-   * @param {string} data data to use in request body
-   * @param {Object} [instance] object to use as the resource entity instance
-   * @param {...*} [args] additional arguments to provide to request method
-   * @returns {Promise} response
-   */
-  create (data, instance, ...args) {
-    return this.action({ rel: 'create', method: 'post', instance }, undefined, data, ...args)
-  }
-
-  /**
-   * Performs an HTTP PUT request on a Restful API resource entity.
-   *
-   * @param {*} data data to use in request body
-   * @param {Object} [instance] object to use as the resource entity instance
-   * @param {...*} [args] additional arguments to provide to request method
-   * @returns {Promise} response
-   */
-  update (data, instance, ...args) {
-    return this.action({ rel: 'update', method: 'put', instance }, data, ...args)
-  }
-
-  /**
-   * Performs an HTTP DELETE request on a Restful API resource entity.
-   *
-   * @param {Object} [instance] object to use as the resource entity instance
-   * @param {...*} [args] additional arguments to provide to request method
-   * @returns {Promise} response
-   */
-  delete (instance, ...args) {
-    return this.action({ rel: 'delete', method: 'delete', instance }, ...args)
   }
 
 }
