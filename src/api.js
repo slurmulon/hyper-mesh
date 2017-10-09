@@ -309,6 +309,7 @@ export class HyperApi {
   }
 
   /**
+
    * Resolves a JSON Hyper-Schema by a URI
    *
    * If a local Object, it simply returns the result
@@ -318,7 +319,8 @@ export class HyperApi {
    *
    *    "The URI is not a network locator, only an identifier.
    *     A schema need not be downloadable from the address if it is a network-addressable URL,
-   *     and implementations SHOULD NOT assume they should perform a network operation when they encounter a network-addressable URI."
+   *     and implementations SHOULD NOT assume they should perform a network operation when
+   *     they encounter a network-addressable URI."
    *
    * @param {string|Object} data unique identifier or full representation of a JSON Hyper-Schema
    * @return {Promise<Object>} resolved content of JSON Hyper-Schema
