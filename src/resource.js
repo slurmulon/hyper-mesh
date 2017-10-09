@@ -55,6 +55,7 @@ export class HyperResource {
    * @param {...*} [args] additional arguments to provide to request method
    * @returns {Promise} response
    */
+  // TODO: consider supporting `all` as well to be consistent with the `one` vs. `all` paradigm
   get (rel = 'self', instance, ...args) {
     return this.action({ rel, method: 'get', instance }, ...args)
   }
