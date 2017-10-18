@@ -19,7 +19,7 @@
 import { HyperApi } from 'hyper-mesh'
 
 export const mesh = async () => {
-  const api = new HyperApi('http://api.madhax.io/schemas/root.json')
+  const api = await new HyperApi('http://api.madhax.io/schemas/root.json').index()
   const { schema, resource } = api
 
   const resources = {
@@ -28,11 +28,16 @@ export const mesh = async () => {
     order : resource('order.json')
   }
 
+  // perform some GET requests on our API resources
   const user   = await resources.user.get()
   const cart   = await resources.cart.get()
   const orders = await resources.order.all()
 
-  // ...
+  // create a new entity via POST
+  await resources.user.post({ username: 'madhax', password: 'abc123' })
+
+  // delete an API resource entity
+  await resources.orders.delete(orders[0].uuid)
 }
 ```
 
