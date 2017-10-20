@@ -30,7 +30,7 @@ export class HyperApi {
    */
   // TODO: consider binding helper functions for searching for schemas
   get schemas () {
-    return map(this.core._schemas, schema => new HyperSchema(schema, this))
+    return map(this.core._schemas, schema => new HyperSchema(schema.schema, this))
   }
 
   /**
@@ -163,6 +163,7 @@ export class HyperApi {
    * @param {string} key
    * @returns {Object}
    */
+  // TODO: allow return of either `schema` or `resource`
   get (key) {
     return this.byRef(key) || this.byId(key)
   }
@@ -173,8 +174,9 @@ export class HyperApi {
    * @param {string} ref
    * @returns {Object}
    */
+  // TODO: allow return of either `schema` or `resource`
   byRef (ref) {
-    return get(this.schemas[ref], 'schema')
+    return this.schemas[ref]
   }
 
   /**
@@ -183,8 +185,9 @@ export class HyperApi {
    * @param {string} id
    * @returns {Object}
    */
-  byId (id) {
-    return get(find(this.schemas), { id }, 'schema')
+  // TODO: allow return of either `schema` or `resource`
+  byId ($id) {
+    return get(find(this.schemas, { $id })
   }
 
   /**

@@ -81,7 +81,7 @@ export class HyperResource {
    * @returns {Promise} response
    */
   create (data, instance, ...args) {
-    return this.action({ rel: 'create', method: 'post', instance }, undefined, data, ...args)
+    return this.action({ rel: 'create', method: 'post', instance }, data, ...args)
   }
 
   /**
