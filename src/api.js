@@ -18,6 +18,7 @@ export class HyperApi {
    * @param {Object|string} root base/index JSON Hyper-Schema definition
    */
   // TODO: accept baseURL paramter. could also imply from root.json URL.
+  // TODO: make root optional. not necessary just a solid practice.
   constructor (root) {
     this.root = root
     this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
@@ -85,6 +86,7 @@ export class HyperApi {
   // TODO
   // - report any `errors` or `missing` schemas during index population
   // - create HyperSchema from each of the `definitions`...?
+  // TODO: support either `this.all` or `this.root.definitions`
   async index (resolvers = { }) {
     this.prepare()
 
@@ -331,7 +333,7 @@ export class HyperApi {
    */
   async resolve (data) {
     if (typeof data === 'string') {
-       const local = this.get(data)
+      const local = this.get(data)
 
       if (!local) {
         return await axios.get(data)
