@@ -187,7 +187,7 @@ export class HyperApi {
    */
   // TODO: allow return of either `schema` or `resource`
   byId ($id) {
-    return get(find(this.schemas, { $id })
+    return find(this.schemas, { $id })
   }
 
   /**
