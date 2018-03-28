@@ -19,9 +19,9 @@ export class HyperApi {
    */
   // TODO: accept baseURL paramter. could also imply from root.json URL.
   // TODO: make root optional. not necessary just a solid practice.
-  constructor (root) {
+  constructor (root, config) {
     this.root = root
-    this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true })
+    this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true, ...config })
   }
 
   /**
