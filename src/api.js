@@ -11,6 +11,7 @@ import { get, find, map, isEmpty } from 'lodash'
  *
  * Also handles integration with Ajv, the core JSON Schema validation module.
  */
+// TODO: asynchronous compilation (@see https://github.com/epoberezkin/ajv#asynchronous-schema-compilation)
 // TODO: potentailly rename to HyperIndex (renaming `this.core` to `this.index` as well)
 export class HyperApi {
 
@@ -264,6 +265,8 @@ export class HyperApi {
 
   /**
    * Creates a validation function based on the JSON Hyper-Schema (found with `id`)
+   *
+   * @see https://github.com/epoberezkin/ajv#combining-schemas-with-ref
    *
    * @param {string} id identifier of the JSON Huper-Schema (usually $id)
    * @param {...*} [args] additional arguments to pass to Ajv
