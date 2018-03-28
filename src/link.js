@@ -16,13 +16,13 @@ export class HyperLink {
   }
 
   /**
-   * Determines the URL of a Link Description Object by cross-referencing
-   * the entity instance object with the relevant JSON Hyper-Schema
+   * Compiles the URL of an LDO by resolving any JSON Pointer URI template variables
+   * with entity instance data
    *
-   * @param {string} rel local unique relation type of the link
-   * @param {Object} [instance] object to use as the resource entity instance
+   * @param {Object} [entity] object to use as the resource entity instance
    * @returns {Promise<String>} URL of the Link Description Object (LDO)
    */
+  // TODO: support latest version of Hyper-Schema, adds lots of features here
   url (entity = this.entity) {
     let url       = this.href
     const matches = this.href.match(/\\{{.*?\}/gi) || []

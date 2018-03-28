@@ -3,6 +3,7 @@ import { HyperLink } from './link'
 /**
  * Entity instance belonging to a single JSON Hyper-Schema
  */
+// TODO: either axe this or add more methods
 export class HyperEntity {
 
   /**

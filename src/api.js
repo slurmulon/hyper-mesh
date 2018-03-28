@@ -12,6 +12,7 @@ import { get, find, map, isEmpty } from 'lodash'
  * Also handles integration with Ajv, the core JSON Schema validation module.
  */
 // TODO: asynchronous compilation (@see https://github.com/epoberezkin/ajv#asynchronous-schema-compilation)
+// TODO: accept custom `axios` instance (optional)
 // TODO: potentailly rename to HyperIndex (renaming `this.core` to `this.index` as well)
 export class HyperApi {
 
@@ -87,6 +88,7 @@ export class HyperApi {
   // TODO
   // - report any `errors` or `missing` schemas during index population
   // - create HyperSchema from each of the `definitions`...?
+  // TODO: make default resolvers (use `ajv`)
   // TODO: support either `this.all` or `this.root.definitions`
   async index (resolvers = { }) {
     this.prepare()
