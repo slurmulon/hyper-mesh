@@ -18,7 +18,7 @@
 ```js
 import { HyperApi } from 'hyper-mesh'
 
-export const mesh = async () => {
+export const demo = async () => {
   const api = await new HyperApi('http://api.madhax.io/schemas/root.json').index()
   const { schema, resource } = api
 
@@ -34,11 +34,13 @@ export const mesh = async () => {
   const orders = await resources.order.all()
 
   // create a new entity via POST
-  await resources.user.post({ username: 'madhax', password: 'abc123' })
+  await resources.user.create({ username: 'madhax', password: 'abc123' })
 
   // delete an API resource entity
   await resources.orders.delete(orders[0].uuid)
 }
+
+await demo()
 ```
 
 ## License
