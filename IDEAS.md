@@ -51,3 +51,7 @@
   - constructs an empty representation of the schema to allow for simple HTML form integrations
  * `paginate`
   - provides an async generator for allowing pagination on LDOs
+
+# Patterns
+
+- Allow Symbols to be used as identifiers for schemas and/or resources
