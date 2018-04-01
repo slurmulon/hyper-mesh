@@ -76,6 +76,9 @@ export class HyperApi {
     return this.resources.find(resolver)
   }
 
+  // TODO:
+  // load (url)
+
   /**
    * Loads the root JSON Schema and populates this central storage entity
    * with all of the JSON Schemas and their references.

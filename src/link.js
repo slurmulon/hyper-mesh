@@ -13,6 +13,8 @@ import axios from 'axios'
 //  - anchor
 //  - anchorPointer
 //  - collection vs. item
+// TODO: Call this HyperLDO and create a new construct HyperLInk that contains `contextUri`, `contextPionter`, etc.
+//  - or just add a `resolve` method here or something similar
 export class HyperLink {
 
   consructor ({ rel, entity, method, href, encType, targetSchema }) {
@@ -35,6 +37,7 @@ export class HyperLink {
    */
   // TODO: support latest version of Hyper-Schema, adds lots of features here
   //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#uriTemplating
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.7.2 (algorithm)
   //  - `templatePointers`
   //  - `templateRequired`
   //  - `targetMediaType` (soft)
@@ -65,6 +68,7 @@ export class HyperLink {
   //  - `headerSchema` (@see http://json-schema.org/latest/json-schema-hypermedia.html#headerSchema)
   //  - `submissionMediaType` (@see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.6.6.4.1)
   //  - `submissionSchema` (@see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.6.6.4.2)
+  //  - `hrefSchema` (@see http://json-schema.org/latest/json-schema-hypermedia.html#hrefSchema)
   resource ({ method, headers, entity = this.entity }) {
     return axios({ url: this.url(entity), method, headers })
   }
