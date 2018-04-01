@@ -4,12 +4,14 @@ import axios from 'axios'
  * Represents an individual Link Description Object (LDO) belonging
  * to a JSON Hyper-Schema entity.
  *
+ * @see http://json-schema.org/latest/json-schema-hypermedia.html#implementation
  * @see http://json-schema.org/latest/json-schema-hypermedia.html#ldo
  * @see http://json-schema.org/latest/json-schema-hypermedia.html#uriTemplating
  * @see http://json-schema.org/latest/json-schema-hypermedia.html#input
  * @see http://json-schema.org/latest/json-schema-hypermedia.html#json-schema
  */
 // TODO: support:
+//  - base (inherit from parent schema)
 //  - anchor
 //  - anchorPointer
 //  - collection vs. item
@@ -17,16 +19,39 @@ import axios from 'axios'
 //  - or just add a `resolve` method here or something similar
 export class HyperLink {
 
-  consructor ({ rel, entity, method, href, encType, targetSchema }) {
-    this.rel     = rel
-    this.entity  = entity
-    this.method  = method
-    this.href    = href
+  consructor ({
+    rel,
+    entity,
+    method,
+    encType,
+    href,
+    hrefSchema,
+    submissionSchema,
+    targetSchema,
+    anchorPointer,
+    templatePointers,
+    templateRequired
+  }) {
+    this.rel = rel
+    this.entity = entity
+    this.method = method
     this.encType = encType
+    this.href = href
+    this.hrefSchema = hrefSchema
+    this.submissionSchema = submissionSchema
     this.targetSchema = targetSchema
+    this.anchorPointer = anchorPointer
+    this.templatePointers = templatePointeres
+    this.templateRequired = templateRequired
   }
 
-  // TOOD: get headers
+  // TOOD: `get headers`
+
+  // TODO: `populate`
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.7.2.1
+  
+  // TODO: `resolve`
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.9.3
 
   /**
    * Compiles the URL of an LDO by resolving any JSON Pointer URI template variables
@@ -96,6 +121,14 @@ export class HyperLink {
     }
 
     return resource[action]
+  }
+
+  isItem () {
+    return this.rel === 'self'
+  }
+
+  isCollection () {
+    return this.rel === 'collection'
   }
 
 }
