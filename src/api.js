@@ -232,6 +232,7 @@ export class HyperApi {
    * @param {string} pointer JSON Pointer path
    * @returns {Object} matching JSON Schema
    */
+  // TODO: try to eliminate the need fo this. Ajv should handle everything.
   find (path = '#') {
     const chunks = path.split('/')
     const root   = path.startsWith('#') ? `#/${chunks[1]}` : path
