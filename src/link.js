@@ -15,6 +15,7 @@ import axios from 'axios'
 //  - anchor
 //  - anchorPointer
 //  - collection vs. item
+// TODO: accept `api`, that way we can resolve $ref
 // TODO: Call this HyperLDO and create a new construct HyperLInk that contains `contextUri`, `contextPionter`, etc.
 //  - or just add a `resolve` method here or something similar
 export class HyperLink {
@@ -50,8 +51,10 @@ export class HyperLink {
   // TODO: `populate`
   //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.7.2.1
   
-  // TODO: `resolve`
+  // TODO: `get resolved`
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#implementation
   //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.9.3
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#relationType
 
   /**
    * Compiles the URL of an LDO by resolving any JSON Pointer URI template variables
@@ -90,6 +93,8 @@ export class HyperLink {
    * @returns {Promise<Axios>} Axios HTTP resource
    */
   // TODO:
+  //  - Link Relation Type (@see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.6.2)
+  //  - Requets (@see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.7.4)
   //  - `headerSchema` (@see http://json-schema.org/latest/json-schema-hypermedia.html#headerSchema)
   //  - `submissionMediaType` (@see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.6.6.4.1)
   //  - `submissionSchema` (@see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.6.6.4.2)
@@ -112,6 +117,8 @@ export class HyperLink {
   // TODO: add header based on encType if it exists
   // TODO: automatically validate data against entity.schema
   // FIXME: `method` is no longer supported by Hyper-Schema
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#rfc.section.8.4
+  //  - @see http://json-schema.org/latest/json-schema-hypermedia.html#post
   action ({ method, headers, entity = this.entity }) {
     const resource = this.resource(...arguments)
     const action   = method || this.method.toLowerCase()
