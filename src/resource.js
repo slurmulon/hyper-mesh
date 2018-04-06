@@ -3,6 +3,7 @@
  *
  * Unifies a JSON Hyper-Schema document with Axios, a popular Node HTTP module
  */
+// FIXME: Hyper-Schema no longer supports `method`. Allow `method` overrides in each link relation.
 export class HyperResource {
 
   /**

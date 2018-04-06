@@ -130,8 +130,14 @@ export class HyperLink {
     return resource[action]
   }
 
-  isItem () {
+  // @see http://json-schema.org/latest/json-schema-hypermedia.html#collectionAndItem
+
+  isSelf () {
     return this.rel === 'self'
+  }
+
+  isItem () {
+    return this.rel === 'item'
   }
 
   isCollection () {

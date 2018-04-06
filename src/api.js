@@ -19,12 +19,17 @@ export class HyperApi {
   /**
    * @param {Object|string} root base/index JSON Hyper-Schema definition
    */
-  // TODO: accept baseURL paramter. could also imply from root.json URL.
+  // TODO: if `config` is a string call `fetch` for the schemas
+  // TODO: accept baseURL parameter. could also imply from root.json URL.
   // TODO: make root optional. not necessary just a solid practice.
-  constructor (root, config) {
-    this.root = root
+  // constructor (root, config) {
+    // this.root = root
+  constructor (config) {
     this.core = new Ajv({ v5: true, jsonPointers: true, allErrors: true, ...config })
   }
+
+  // TODO: `fetch`
+  // calls a remote schema API and fetches the index of schemas
 
   /**
    * Provides every indexed JSON Hyper-Schema
@@ -88,7 +93,8 @@ export class HyperApi {
    * @param {Function} [resolvers] mapping functions to determine keys and schemas {key: String, schema: Object}
    * @returns {Promise<this>}
    */
-  // TODO
+  // TODO: accept root schema URL (probably makes the `fetch` method redundant)
+  // TODO:
   // - report any `errors` or `missing` schemas during index population
   // - create HyperSchema from each of the `definitions`...?
   // TODO: make default resolvers (use `ajv`)
