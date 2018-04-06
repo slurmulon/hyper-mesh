@@ -16,11 +16,12 @@
 ## Usage
 
 ```js
+import schemas from './schemas'
 import { HyperApi } from 'hyper-mesh'
 
 export const demo = async () => {
-  const api = await new HyperApi('http://api.madhax.io/schemas/root.json').index()
-  const { schema, resource } = api
+  const api = new HyperApi({ schemas })
+  const { resource } = api
 
   const resources = {
     user  : resource('user.json'),
@@ -40,7 +41,7 @@ export const demo = async () => {
   await resources.orders.delete(orders[0].uuid)
 }
 
-await demo()
+demo()
 ```
 
 ## License
