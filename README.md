@@ -1,5 +1,5 @@
 # hyper-mesh
-> :globe_with_meridians: JSON Hyper-Schema for NodeJS
+> :globe_with_meridians: JSON Hyper-Schema + Axios
 ---
 
 ## Features
